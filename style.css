@@ -1,0 +1,700 @@
+/* ==========================================================================
+   VARIABLES DE DISEÑO Y TEMAS
+   ========================================================================== */
+:root {
+  /* Paleta sugerida: Verde olivo oscuro, Borgoña, Marfil y Dorado sutil */
+  --bg-primary: #121814;          /* Verde olivo noche muy profundo */
+  --bg-secondary: #1a221c;        /* Tono ligeramente más claro */
+  --envelope-base: #1f2a23;       /* Verde olivo elegante para el sobre */
+  --envelope-flap: #28372e;       /* Tono ligeramente contrastante para solapa */
+  --paper-cream: #faf7f2;         /* Papel marfil cálido */
+  --paper-border: #e8e0d5;        /* Borde envejecido sutil */
+  --text-primary: #242422;        /* Grafito oscuro para lectura impecable */
+  --text-muted: #5e5d59;          /* Secundario suave */
+  --text-light: #f3ede2;          /* Texto en fondos oscuros */
+  --accent-burgundy: #6b1d28;     /* Borgoña sobrio */
+  --accent-burgundy-hover: #832533;
+  --accent-gold: #c5a880;         /* Dorado mate / champaña sutil */
+  --accent-gold-soft: rgba(197, 168, 128, 0.25);
+  --shadow-warm: 0 18px 45px rgba(0, 0, 0, 0.45);
+  --transition-smooth: all 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-script: 'Alex Brush', cursive;
+  --font-sans: 'Montserrat', system-ui, -apple-system, sans-serif;
+}
+
+/* ==========================================================================
+   RESET Y BASE
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  background-color: var(--bg-primary);
+  color: var(--text-light);
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  position: relative;
+  line-height: 1.6;
+  background: radial-gradient(circle at 50% 20%, #1e2821 0%, var(--bg-primary) 85%);
+}
+
+/* Canvas de luciérnagas sutiles */
+#particles-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.75;
+}
+
+.main-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px;
+}
+
+/* ==========================================================================
+   BOTÓN FLOTANTE DE MÚSICA
+   ========================================================================== */
+.music-btn {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 100;
+  background: rgba(26, 34, 28, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--accent-gold-soft);
+  color: var(--accent-gold);
+  padding: 9px 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.music-btn:hover {
+  background: var(--accent-burgundy);
+  color: #fff;
+  border-color: transparent;
+  transform: translateY(-2px);
+}
+
+.music-btn.playing {
+  border-color: var(--accent-gold);
+  color: #fff;
+  background: rgba(107, 29, 40, 0.85);
+}
+
+/* ==========================================================================
+   PANTALLA 1: EL SOBRE
+   ========================================================================== */
+.screen-section {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.screen-section.hidden {
+  display: none;
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+.screen-section.active {
+  display: block;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.envelope-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 10px;
+}
+
+.envelope-intro {
+  margin-bottom: 35px;
+}
+
+.envelope-tagline {
+  font-family: var(--font-script);
+  font-size: 2.1rem;
+  color: var(--accent-gold);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.envelope-subtext {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: #d6ded8;
+}
+
+/* Construcción visual del sobre */
+.envelope-wrapper {
+  position: relative;
+  width: 320px;
+  height: 220px;
+  cursor: pointer;
+  margin-bottom: 35px;
+  perspective: 1000px;
+  transition: transform 0.4s ease;
+}
+
+.envelope-wrapper:hover {
+  transform: translateY(-6px) scale(1.02);
+}
+
+.envelope {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--envelope-base);
+  border-radius: 6px;
+  box-shadow: var(--shadow-warm), 0 0 0 1px rgba(197, 168, 128, 0.15);
+  overflow: visible;
+}
+
+/* Hoja asomada antes de abrir */
+.paper-peek {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  right: 20px;
+  height: 80px;
+  background: var(--paper-cream);
+  border-radius: 4px;
+  z-index: 1;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Solapas del sobre mediante triángulos CSS */
+.envelope::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 160px solid #16201a;
+  border-top: 110px solid transparent;
+  z-index: 2;
+  border-bottom-left-radius: 6px;
+}
+
+.envelope::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-right: 160px solid #19241e;
+  border-top: 110px solid transparent;
+  z-index: 2;
+  border-bottom-right-radius: 6px;
+}
+
+.envelope-pocket {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 160px solid transparent;
+  border-right: 160px solid transparent;
+  border-bottom: 125px solid #1c2720;
+  z-index: 3;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+/* Solapa superior interactiva */
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 160px solid transparent;
+  border-right: 160px solid transparent;
+  border-top: 125px solid var(--envelope-flap);
+  transform-origin: top;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 4;
+}
+
+/* Lacre de cera */
+.wax-seal {
+  position: absolute;
+  top: 95px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 48px;
+  background: radial-gradient(circle, #832533 20%, var(--accent-burgundy) 90%);
+  border-radius: 50%;
+  z-index: 5;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 2px 2px rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-gold);
+  border: 1px dashed rgba(197, 168, 128, 0.4);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.wax-seal .seal-inner {
+  font-size: 1.1rem;
+}
+
+/* Animación al presionar "Abrir carta" */
+.envelope-wrapper.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 0;
+}
+
+.envelope-wrapper.open .wax-seal {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.4);
+}
+
+.envelope-wrapper.open .paper-peek {
+  animation: slideOutPaper 0.9s 0.35s forwards cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes slideOutPaper {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-70px); }
+}
+
+/* ==========================================================================
+   BOTONES
+   ========================================================================== */
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-burgundy) 0%, #4f151e 100%);
+  color: #fff;
+  border: 1px solid rgba(197, 168, 128, 0.3);
+  padding: 14px 34px;
+  border-radius: 40px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(107, 29, 40, 0.4);
+  transition: var(--transition-smooth);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--accent-burgundy-hover) 0%, var(--accent-burgundy) 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(107, 29, 40, 0.6);
+  border-color: var(--accent-gold);
+}
+
+.btn-secondary, .btn-whatsapp {
+  border: none;
+  padding: 13px 24px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.btn-secondary {
+  background: #2a352d;
+  color: var(--text-light);
+  border: 1px solid var(--accent-gold-soft);
+}
+
+.btn-secondary:hover {
+  background: #36443a;
+  transform: translateY(-2px);
+}
+
+.btn-whatsapp {
+  background: #25D366;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.25);
+}
+
+.btn-whatsapp:hover {
+  background: #20ba59;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(37, 211, 102, 0.35);
+}
+
+/* ==========================================================================
+   PANTALLA 2: HOJA DE LA CARTA
+   ========================================================================== */
+.letter-sheet {
+  background: var(--paper-cream);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 60px 48px;
+  position: relative;
+  box-shadow: var(--shadow-warm), 0 0 0 1px var(--paper-border);
+  margin: 30px 0;
+  background-image: 
+    radial-gradient(#e5ddd0 0.8px, transparent 0.8px),
+    radial-gradient(#e5ddd0 0.8px, var(--paper-cream) 0.8px);
+  background-size: 32px 32px;
+  background-position: 0 0, 16px 16px;
+}
+
+/* Borde fino interior tipo editorial */
+.sheet-frame {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  border: 1px solid rgba(197, 168, 128, 0.4);
+  pointer-events: none;
+}
+
+.letter-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.monogram {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  letter-spacing: 0.35em;
+  color: var(--accent-burgundy);
+  margin-bottom: 14px;
+}
+
+.letter-greeting {
+  font-family: var(--font-script);
+  font-size: 2.8rem;
+  color: var(--accent-burgundy);
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+
+.letter-date {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+}
+
+.letter-body {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  line-height: 1.85;
+  color: #2b2a27;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.letter-body p {
+  margin-bottom: 22px;
+  text-indent: 1.6em;
+}
+
+.letter-body p:first-of-type {
+  text-indent: 0;
+}
+
+.letter-closing-statement {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.35rem;
+  text-align: center !important;
+  text-indent: 0 !important;
+  color: var(--accent-burgundy);
+  margin-top: 35px;
+}
+
+.letter-signature-block {
+  margin-top: 40px;
+  text-align: right;
+  text-indent: 0 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.sign-intro {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+.signature {
+  font-family: var(--font-script);
+  font-size: 3.2rem;
+  color: var(--accent-burgundy);
+  line-height: 1.1;
+  margin-top: -6px;
+  margin-right: 15px;
+}
+
+.ornament-divider {
+  text-align: center;
+  font-size: 1rem;
+  letter-spacing: 0.4em;
+  color: var(--accent-gold);
+  margin: 50px 0 40px;
+  opacity: 0.8;
+}
+
+/* ==========================================================================
+   GALERÍA DE FOTOS
+   ========================================================================== */
+.gallery-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.gallery-title {
+  font-family: var(--font-script);
+  font-size: 2.5rem;
+  color: var(--accent-burgundy);
+  margin-bottom: 4px;
+}
+
+.gallery-subtitle {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin-bottom: 35px;
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.polaroid-card {
+  background: #ffffff;
+  padding: 12px 12px 20px;
+  border-radius: 3px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  transform: rotate(-1.5deg);
+}
+
+.polaroid-card:nth-child(even) {
+  transform: rotate(1.5deg);
+}
+
+.polaroid-card:hover {
+  transform: rotate(0deg) translateY(-6px) scale(1.02);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.14);
+}
+
+.photo-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 2px;
+  background: #ebe6df;
+}
+
+.photo-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.polaroid-card:hover .photo-wrapper img {
+  transform: scale(1.05);
+}
+
+.polaroid-card figcaption {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #4a4742;
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   SECCIÓN FINAL Y COMPARTIR
+   ========================================================================== */
+.final-section {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.final-title {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  color: var(--accent-burgundy);
+  letter-spacing: 0.03em;
+  margin-bottom: 12px;
+}
+
+.final-message {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: #3b3934;
+  margin-bottom: 24px;
+}
+
+.final-love {
+  font-family: var(--font-script);
+  font-size: 2.8rem;
+  color: var(--accent-burgundy);
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.final-author {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+}
+
+.share-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+/* ==========================================================================
+   ANIMACIÓN PROGRESIVA DE PÁRRAFOS AL SCROLL
+   ========================================================================== */
+.fade-paragraph {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-paragraph.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   RESPONSIVE (SMARTPHONES)
+   ========================================================================== */
+@media (max-width: 640px) {
+  .main-wrapper {
+    padding: 16px 10px;
+  }
+
+  .envelope-wrapper {
+    width: 290px;
+    height: 200px;
+  }
+
+  .envelope::before,
+  .envelope::after {
+    border-left-width: 145px;
+    border-right-width: 145px;
+  }
+
+  .envelope-pocket {
+    border-left-width: 145px;
+    border-right-width: 145px;
+    border-bottom-width: 115px;
+  }
+
+  .envelope-flap {
+    border-left-width: 145px;
+    border-right-width: 145px;
+    border-top-width: 115px;
+  }
+
+  .envelope-tagline {
+    font-size: 1.75rem;
+  }
+
+  .envelope-subtext {
+    font-size: 1.1rem;
+  }
+
+  .letter-sheet {
+    padding: 40px 22px;
+  }
+
+  .letter-greeting {
+    font-size: 2.3rem;
+  }
+
+  .letter-body {
+    font-size: 1.12rem;
+    line-height: 1.75;
+    text-align: left; /* Mayor legibilidad en pantallas angostas */
+  }
+
+  .photo-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .music-btn {
+    top: 12px;
+    right: 12px;
+    padding: 7px 14px;
+    font-size: 0.75rem;
+  }
+
+  .share-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .share-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+}

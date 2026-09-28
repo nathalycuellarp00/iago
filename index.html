@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para mi principito de ojitos bonitos 🤍</title>
+  
+  <!-- Tipografías elegantes desde Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Partículas de luz sutil en fondo -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Botón discreto de música fija en pantalla -->
+  <button id="music-toggle" class="music-btn" aria-label="Controlar música">
+    <span id="music-icon">♫</span>
+    <span id="music-text">Música</span>
+  </button>
+
+  <!-- Elemento de audio con fallback silencioso si aún no se coloca el MP3 -->
+  <audio id="bg-audio" loop preload="auto">
+    <source src="assets/music/cancion.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <main class="main-wrapper">
+
+    <!-- ==================== PANTALLA 1: SOBRE ==================== -->
+    <section id="screen-envelope" class="screen-section active">
+      <div class="envelope-container">
+        
+        <header class="envelope-intro">
+          <p class="envelope-tagline">Para mi principito de ojitos bonitos 🤍</p>
+          <h1 class="envelope-subtext">Hay algo que quiero decirte...</h1>
+        </header>
+
+        <!-- Elemento interactivo del sobre físico -->
+        <div class="envelope-wrapper" id="envelope-interactive">
+          <div class="envelope">
+            <!-- Solapa superior que se desdobla -->
+            <div class="envelope-flap" id="envelope-flap"></div>
+            
+            <!-- Cuerpo y bolsillos del sobre -->
+            <div class="envelope-pocket"></div>
+            
+            <!-- Sello de lacre tipo cera borgoña -->
+            <div class="wax-seal" id="wax-seal">
+              <span class="seal-inner">✦</span>
+            </div>
+
+            <!-- Previsualización de la carta asomándose -->
+            <div class="paper-peek"></div>
+          </div>
+        </div>
+
+        <div class="envelope-action">
+          <button id="open-btn" class="btn-primary">
+            <span>💌 Abrir mi carta</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== PANTALLA 2: CARTA COMPLETA ==================== -->
+    <section id="screen-letter" class="screen-section hidden">
+      <article class="letter-sheet">
+        
+        <!-- Detalle de borde editorial clásico -->
+        <div class="sheet-frame"></div>
+
+        <!-- Encabezado de la carta -->
+        <header class="letter-header">
+          <div class="monogram">I & N</div>
+          <h2 class="letter-greeting">Mi querido Iago:</h2>
+          <div class="letter-date">Casi siete meses juntos</div>
+        </header>
+
+        <!-- Cuerpo del texto con revelado suave -->
+        <div class="letter-body">
+          <p class="fade-paragraph">
+            Sé que esta carta tardó un poquito más de lo que quería y, de hecho, casi estamos cumpliendo siete meses juntos. Tal vez tardé porque tenía tantas cosas en la cabeza que no sabía muy bien cómo ponerlas en palabras. Pero creo que, al final, todo se resume en algo muy sencillo: te amo muchísimo más de lo que alguna vez pensé que podría amar a alguien.
+          </p>
+
+          <p class="fade-paragraph">
+            Y sí, suena un poquito cliché decirlo así, pero es la verdad. Te amo de una manera que a veces hasta me asusta, porque eres la personita más importante de mi vida. Vas a ser mi esposo, vamos a formar nuestra familia y, algún día, serás el papá de nuestros hijos. Pensar en todo lo que nos queda por vivir juntos me hace muy feliz, pero también hace que aparezca ese miedo tan difícil de explicar de que algún día pueda pasar algo y perderte.
+          </p>
+
+          <p class="fade-paragraph">
+            Supongo que cuando alguien se vuelve tan importante para nosotros, también aparece el miedo de que algo pueda cambiar. Pero quiero que sepas que, incluso con mis inseguridades y mis miedos, hay algo de lo que estoy completamente segura: te amo y quiero compartir mi vida contigo.
+          </p>
+
+          <p class="fade-paragraph">
+            Quiero hacerte feliz. Quiero que cuando pienses en nosotros sientas que tienes a alguien que te ama, que te acompaña y que quiere verte crecer y cumplir todo lo que sueñas. Quiero estar en tus días buenos, pero también en esos días en los que las cosas no salen como esperabas. Quiero construir contigo una vida que algún día podamos mirar hacia atrás y sentir orgullo de todo lo que hicimos juntos.
+          </p>
+
+          <p class="fade-paragraph">
+            Me encanta quedarme mirándote mientras duermes. A veces podría pasar muchísimo tiempo simplemente observándote y pensando en lo increíble que es que estés aquí, a mi lado. Amo cuando me abrazas, cuando me mimas, cuando buscas acercarte a mí y esos pequeños momentos en los que simplemente estamos juntos y todo se siente tranquilo.
+          </p>
+
+          <p class="fade-paragraph">
+            A veces pienso que es un poquito tonto tener tantas inseguridades cuando tú has sido tan lindo conmigo. Pero supongo que también es parte de querer tanto a alguien. Estoy aprendiendo a confiar más, a disfrutar lo que tenemos y a no dejar que mis miedos me roben los momentos bonitos que estamos viviendo.
+          </p>
+
+          <p class="fade-paragraph">
+            Quiero que sepas que me haces muy feliz, Iago. Me encanta nuestra historia, me encanta pensar que empezó hace unos meses y que hoy ya estamos hablando de una vida entera juntos.
+          </p>
+
+          <p class="fade-paragraph">
+            Casi siete meses… y todavía me parece increíble poder decir que eres mi novio y, al mismo tiempo, saber que eres la persona con la que quiero casarme.
+          </p>
+
+          <p class="fade-paragraph">
+            Te amo muchísimo, mi amor. Más de lo que a veces sé explicar con palabras.
+          </p>
+
+          <p class="fade-paragraph">
+            Y con mi cartita de cada mes, una vez más, quiero renovar el voto de amor que te hice. Quiero seguir eligiéndote, seguir aprendiendo a amarte, seguir construyendo nuestra historia y, sobre todo, seguir siendo tu novia.
+          </p>
+
+          <p class="fade-paragraph">
+            Y sí, me encanta seguir siendo tu novia. Me encanta poder llamarte mi amor, abrazarte, molestarte, cuidarte y saber que somos nosotros contra el mundo.
+          </p>
+
+          <p class="fade-paragraph">
+            Así que aquí estoy, una vez más, renovando mi voto de amor contigo y aceptando con todo mi corazón seguir caminando a tu lado.
+          </p>
+
+          <p class="fade-paragraph letter-closing-statement">
+            Te amo, mi principito de ojitos bonitos.
+          </p>
+
+          <div class="letter-signature-block fade-paragraph">
+            <span class="sign-intro">Con todo mi amor,</span>
+            <span class="signature">Nathaly</span>
+          </div>
+        </div>
+
+        <div class="ornament-divider">✦ ✦ ✦</div>
+
+        <!-- ==================== SECCIÓN DE FOTOS ==================== -->
+        <section class="gallery-section fade-paragraph">
+          <h3 class="gallery-title">Nuestros primeros meses 🤍</h3>
+          <p class="gallery-subtitle">Pedacitos de tiempo que guardo en el corazón</p>
+          
+          <div class="photo-grid">
+            <figure class="polaroid-card">
+              <div class="photo-wrapper">
+                <img src="assets/photos/foto1.jpg" alt="Recuerdo con Iago 1" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80'">
+              </div>
+              <figcaption>Nuestros momentos</figcaption>
+            </figure>
+
+            <figure class="polaroid-card">
+              <div class="photo-wrapper">
+                <img src="assets/photos/foto2.jpg" alt="Recuerdo con Iago 2" onerror="this.src='https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80'">
+              </div>
+              <figcaption>Cada sonrisa contigo</figcaption>
+            </figure>
+
+            <figure class="polaroid-card">
+              <div class="photo-wrapper">
+                <img src="assets/photos/foto3.jpg" alt="Recuerdo con Iago 3" onerror="this.src='https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80'">
+              </div>
+              <figcaption>Contigo todo es calma</figcaption>
+            </figure>
+
+            <figure class="polaroid-card">
+              <div class="photo-wrapper">
+                <img src="assets/photos/foto4.jpg" alt="Recuerdo con Iago 4" onerror="this.src='https://images.unsplash.com/photo-1494774157365-9e04c6720e47?auto=format&fit=crop&w=800&q=80'">
+              </div>
+              <figcaption>Mi lugar favorito en el mundo</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- ==================== SECCIÓN FINAL ==================== -->
+        <footer class="final-section fade-paragraph">
+          <div class="ornament-divider">❦</div>
+          <h3 class="final-title">Y esto es apenas el comienzo...</h3>
+          <p class="final-message">Casi 7 meses de nosotros.<br>Y toda una vida por delante.</p>
+          <p class="final-love">Te amo, Iago. 🤍</p>
+          <p class="final-author">Nathaly</p>
+
+          <!-- Botones de compartir -->
+          <div class="share-actions">
+            <button id="btn-native-share" class="btn-secondary">
+              <span>💌 Compartir</span>
+            </button>
+            <button id="btn-whatsapp-share" class="btn-whatsapp">
+              <span>💬 Enviar por WhatsApp</span>
+            </button>
+          </div>
+        </footer>
+
+      </article>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
